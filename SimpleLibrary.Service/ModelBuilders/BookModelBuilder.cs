@@ -26,7 +26,7 @@ namespace SimpleLibrary.Service.ModelBuilders
             {
                 model.ISBN = entity.ISBN;
                 model.BookName = entity.BookName;
-                //model.Cover = entity.Cover;
+                model.Cover = entity.Cover;
                 model.Description = entity.Description;
                 model.Status = (Enums.BookStatus)Enum.Parse(typeof(Enums.BookStatus), entity.Status.ToString(), true);
                 model.LastRentOn = entity.LastRentOn;
@@ -66,7 +66,7 @@ namespace SimpleLibrary.Service.ModelBuilders
             throw new NotImplementedException();
         }
 
-        public IEnumerable<BookViewModel> CreateModelList(Func<Books, int, bool> predicate, int pageNumber, int pageSize)
+        public IEnumerable<BookViewModel> CreateModelList(Func<Books, bool> predicate, int pageNumber, int pageSize)
         {
             if (pageSize <= 0)
             {
@@ -90,7 +90,7 @@ namespace SimpleLibrary.Service.ModelBuilders
             return modelList;
         }
 
-        public async Task<IEnumerable<BookViewModel>> CreateModelListAsync(Func<Books, int, bool> predicate, int pageNumber, int pageSize)
+        public async Task<IEnumerable<BookViewModel>> CreateModelListAsync(Func<Books, bool> predicate, int pageNumber, int pageSize)
         {
             IEnumerable<BookViewModel> modelList = new List<BookViewModel>();
 

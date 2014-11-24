@@ -13,7 +13,7 @@ namespace SimpleLibrary.Service.Models
 
         public string BookName { get; set; }
 
-        public string Cover { get; set; }
+        public byte[] Cover { get; set; }
 
         public string Description { get; set; }
 

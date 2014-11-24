@@ -11,7 +11,7 @@ namespace SimpleLibrary.Service
 {
     public class BaseModelBuilder : IDisposable
     {
-        public SimpLibSysContainer LibraryContext
+        public SimpLibSysContext LibraryContext
         {
             get;
             set;
@@ -19,12 +19,24 @@ namespace SimpleLibrary.Service
 
         public BaseModelBuilder()
         {
-            this.LibraryContext = new SimpLibSysContainer();
+            this.LibraryContext = new SimpLibSysContext();
         }
 
         public void Dispose()
         {
             this.LibraryContext.Dispose();
         }
+    }
+
+    public class SimpLibSysContext : DbContext
+    {
+        public SimpLibSysContext()
+            : base(Config.DBConnectionString)
+        {
+        }
+
+        public DbSet<LibraryUsers> LibraryUsers { get; set; }
+        public DbSet<Books> Books { get; set; }
+        public DbSet<BookRentHistory> BookRentHistories { get; set; }
     }
 }

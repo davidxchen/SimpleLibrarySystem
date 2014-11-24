@@ -22,7 +22,7 @@ namespace SimpleLibrary.Data
         public int Id { get; set; }
         public string ISBN { get; set; }
         public string BookName { get; set; }
-        public byte Cover { get; set; }
+        public byte[] Cover { get; set; }
         public string Description { get; set; }
         public System.DateTime CreatedOn { get; set; }
         public int CreatedBy { get; set; }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SimpleLibrary.Service.ModelBuilders;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -10,7 +11,10 @@ namespace SimpleLibrary.Web.Controllers
     {
         public ActionResult Index()
         {
-            return View();
+            var bookBuilder = new BookModelBuilder();
+            var model = bookBuilder.CreateModelList(b => !string.IsNullOrEmpty(b.BookName), 0, 20);
+
+            return View(model);
         }
 
         public ActionResult About()

@@ -2,7 +2,7 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, 2012 and Azure
 -- --------------------------------------------------
--- Date Created: 11/24/2014 22:36:38
+-- Date Created: 11/24/2014 23:19:26
 -- Generated from EDMX file: C:\Users\David\documents\visual studio 2013\Projects\SimpleLibrarySystem\SimpleLibrary.Data\SimpLibSys.edmx
 -- --------------------------------------------------
 
@@ -56,7 +56,7 @@ CREATE TABLE [dbo].[Books] (
     [Id] int IDENTITY(1,1) NOT NULL,
     [ISBN] nvarchar(max)  NOT NULL,
     [BookName] nvarchar(max)  NOT NULL,
-    [Cover] tinyint  NOT NULL,
+    [Cover] varbinary(max)  NOT NULL,
     [Description] nvarchar(max)  NOT NULL,
     [CreatedOn] datetime  NOT NULL,
     [CreatedBy] int  NOT NULL,

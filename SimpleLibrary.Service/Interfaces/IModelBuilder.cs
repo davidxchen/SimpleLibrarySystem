@@ -14,7 +14,7 @@ namespace SimpleLibrary.Service.Interfaces
         Task<TViewModel> BuildModelFromAsync(int id);
         TViewModel Rebuild(TViewModel model);
         Task<TViewModel> RebuildAsync(TViewModel model);
-        IEnumerable<TViewModel> CreateModelList(Func<TEntity, int, bool> predicate, int pageNumber, int pageSize);
-        Task<IEnumerable<TViewModel>> CreateModelListAsync(Func<TEntity, int, bool> predicate, int pageNumber, int pageSize);
+        IEnumerable<TViewModel> CreateModelList(Func<TEntity, bool> predicate, int pageNumber, int pageSize);
+        Task<IEnumerable<TViewModel>> CreateModelListAsync(Func<TEntity, bool> predicate, int pageNumber, int pageSize);
     }
 }

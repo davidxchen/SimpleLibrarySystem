@@ -34,7 +34,7 @@
     <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="ISBN" Type="nvarchar(max)" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="BookName" Type="nvarchar(max)" Nullable="false" />
-    <Property Name="Cover" Type="tinyint" Nullable="false" />
+    <Property Name="Cover" Type="varbinary(max)" Nullable="false" />
     <Property Name="Description" Type="nvarchar(max)" Nullable="false" />
     <Property Name="CreatedOn" Type="datetime" Nullable="false" />
     <Property Name="CreatedBy" Type="int" Nullable="false" />
@@ -113,7 +113,7 @@
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="ISBN" Type="String" Nullable="false" annotation:StoreGeneratedPattern="Identity" Unicode="true" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" />
           <Property Name="BookName" Type="String" Nullable="false" Unicode="true" />
-          <Property Name="Cover" Type="Byte" Nullable="false" />
+          <Property Name="Cover" Type="Binary" Nullable="false" />
           <Property Name="Description" Type="String" Nullable="false" Unicode="true" />
           <Property Name="CreatedOn" Type="DateTime" Nullable="false" />
           <Property Name="CreatedBy" Type="Int32" Nullable="false" />
