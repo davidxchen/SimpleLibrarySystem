@@ -48,7 +48,11 @@
                     }
                     else
                     {
-                        if (item.Status != SimpleLibrary.Common.Enums.BookStatus.Rent)
+                        if (item.Status == SimpleLibrary.Common.Enums.BookStatus.Rent)
+                        {
+                            @Html.ActionLink("Return", "Return", new { id = item.ISBN }, new { @class = "btn btn-info" })
+                        }
+                        else
                         {
                             @Html.ActionLink("Rent this book", "Rent", new { id = item.ISBN }, new { @class = "btn btn-warning" })
                         }

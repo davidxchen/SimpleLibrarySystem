@@ -23,7 +23,7 @@ namespace SimpleLibrary.Service.Models
 
         public Enums.BookStatus Status { get; set; }
 
-        [DisplayFormat(DataFormatString="{0:dd/MM/yyyy}")]
+        [DisplayFormat(DataFormatString="{0:dd/MM/yyyy h:mm tt}")]
         public DateTime LastRentOn { get; set; }
 
         public List<BookRentHistoryViewModel> RentHistoryList { get; set; }

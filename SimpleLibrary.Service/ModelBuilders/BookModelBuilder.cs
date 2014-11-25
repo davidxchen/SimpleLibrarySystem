@@ -33,9 +33,53 @@ namespace SimpleLibrary.Service.ModelBuilders
                 model.LastRentOn = entity.LastRentOn;
             }
 
-            model.RentHistoryList = new List<BookRentHistoryViewModel>();
+            model.RentHistoryList = BuildHistory(entity.ISBN);
 
             return model;
+        }
+
+        private List<BookRentHistoryViewModel> BuildHistory(string ISBN)
+        {
+            var resultList = new List<BookRentHistoryViewModel>();
+
+            var historyList = base.LibraryContext.BookRentHistories.Where(h => h.ISBN.CompareTo(ISBN) == 0);
+            if (historyList.Any())
+            {
+                foreach (var history in historyList)
+                {
+                    var model = new BookRentHistoryViewModel
+                    {
+                        UserId = history.UserId,
+                        ISBN = history.ISBN,
+                        RentOn = history.RentOn,
+                        ReturnedOn = history.ReturnedOn
+                    };
+
+                    resultList.Add(model);
+                }
+            }
+
+            foreach (var result in resultList)
+            {
+                result.UserName = GetUserName(result.UserId);
+            }
+
+            return resultList;
+        }
+
+        private string GetUserName(int userId)
+        {
+            string userName = string.Empty;
+
+            dynamic entity;
+            var entityList = base.LibraryContext.LibraryUsers.Where(u => u.Id == userId);
+            if (entityList.Any())
+            {
+                entity = entityList.FirstOrDefault();
+                userName = entity.UserName;
+            }
+
+            return userName;
         }
 
         public BookViewModel BuildModelFrom(int id)

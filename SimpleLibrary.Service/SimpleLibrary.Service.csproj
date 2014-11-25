@@ -48,6 +48,7 @@
   <ItemGroup>
     <Compile Include="Commands\BookCommand.cs" />
     <Compile Include="Commands\LibraryUserCommand.cs" />
+    <Compile Include="Commands\RentCommand.cs" />
     <Compile Include="Common\BaseService.cs" />
     <Compile Include="Interfaces\IModelBuilder.cs" />
     <Compile Include="Interfaces\IModelCommand.cs" />

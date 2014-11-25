@@ -10,13 +10,23 @@
 </div>
 
 <div class="row">
-    @foreach(var book in Model)
+    @foreach (var book in Model)
     {
-    <div class="col-md-4">
-        <h2>@book.BookName</h2>
-        <img src="@Url.Action("Cover", "Book", new { id = book.ISBN })" rel="@book.BookName" width="100" />
-        <p>@book.Description</p>
-        <p><a class="btn btn-default" href="@Url.Action("Detail", "Book", new { id = book.ISBN })">Learn more &raquo;</a></p>
-    </div>
+        <div class="col-md-4">
+            <h2>@book.BookName</h2>
+            <img src="@Url.Action("Cover", "Book", new { id = book.ISBN })" rel="@book.BookName" width="100" />
+            <p>@book.Description</p>
+            <p>
+                @if (book.Status != SimpleLibrary.Common.Enums.BookStatus.Rent)
+                {
+                    @Html.ActionLink("Rent this book", "Rent", "Book", new { id = book.ISBN }, new { @class = "btn btn-warning" })
+                }
+                else
+                {
+                    <p>This book has been rent.</p>
+                }
+                <a class="btn btn-default" href="@Url.Action("Detail", "Book", new { id = book.ISBN })">Learn more &raquo;</a>
+            </p>
+        </div>
     }
 </div>

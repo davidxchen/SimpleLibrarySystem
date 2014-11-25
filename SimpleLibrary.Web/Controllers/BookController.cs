@@ -169,5 +169,111 @@ namespace SimpleLibrary.Web.Controllers
 
             return View();
         }
+
+        // id == ISBN
+        public ActionResult Rent(string id)
+        {
+            if (string.IsNullOrEmpty(id))
+            {
+                return RedirectToAction("Index");
+            }
+
+            var model = new BookViewModel();
+            var bookBuilder = new BookModelBuilder();
+            var modelList = bookBuilder.CreateModelList(b => b.ISBN.StartsWith(id), 0, 1);
+
+            if (modelList.Any())
+            {
+                model = modelList.FirstOrDefault();
+            }
+            else
+            {
+                return RedirectToAction("Index");
+            }
+
+            return View(model);
+        }
+
+        // id == ISBN
+        [HttpPost, ActionName("Rent")]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> RentConfirmed(string id)
+        {
+            if (ModelState.IsValid)
+            {
+                var rentModel = new BookRentHistoryViewModel();
+                rentModel.ISBN = id;
+                rentModel.RentOn = DateTime.Now;
+                rentModel.ReturnedOn = new DateTime(1900, 1, 1);
+                rentModel.UserName = User.Identity.Name;
+
+                var rentCommand = new RentCommand();
+                bool result = await rentCommand.ExecuteAsync(rentModel);
+                if (!result)
+                {
+                    ModelState.AddModelError("", "");
+                    return View();
+                }
+                else
+                {
+                    return RedirectToAction("Index");
+                }
+            }
+
+            return View();
+        }
+
+        // id == ISBN
+        public ActionResult Return(string id)
+        {
+            if (string.IsNullOrEmpty(id))
+            {
+                return RedirectToAction("Index");
+            }
+
+            var model = new BookViewModel();
+            var bookBuilder = new BookModelBuilder();
+            var modelList = bookBuilder.CreateModelList(b => b.ISBN.StartsWith(id), 0, 1);
+
+            if (modelList.Any())
+            {
+                model = modelList.FirstOrDefault();
+            }
+            else
+            {
+                return RedirectToAction("Index");
+            }
+
+            return View(model);
+        }
+
+        // id == ISBN
+        [HttpPost, ActionName("Return")]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> ReturnConfirmed(string id)
+        {
+            if (ModelState.IsValid)
+            {
+                var rentModel = new BookRentHistoryViewModel();
+                rentModel.ISBN = id;
+                //rentModel.RentOn = DateTime.Now;
+                rentModel.ReturnedOn = DateTime.Now;
+                rentModel.UserName = User.Identity.Name;
+
+                var rentCommand = new RentCommand();
+                bool result = await rentCommand.ExecuteAsync(rentModel);
+                if (!result)
+                {
+                    ModelState.AddModelError("", "");
+                    return View();
+                }
+                else
+                {
+                    return RedirectToAction("Index");
+                }
+            }
+
+            return View();
+        }
     }
 }

@@ -40,12 +40,23 @@
 </div>
 
 <h4>List of rent history of this book</h4>
-@if (Model.RentHistoryList.Any())
+@if (!Model.RentHistoryList.Any())
 {
     <hr />
-    <p>No history found in this role.</p>
+    <p>No history found.</p>
 }
 <table class="table">
+    <tr>
+        <th>
+            User Name
+        </th>
+        <th>
+            Rent On
+        </th>
+        <th>
+            Returned On
+        </th>
+    </tr>
     @foreach (var item in Model.RentHistoryList)
     {
         <tr>
@@ -53,11 +64,15 @@
                 @item.UserName
             </td>
             <td>
-                @item.RentOn
+                @Html.DisplayFor(m => item.RentOn)
             </td>
             <td>
-                @item.ReturnedOn
+                @if (item.ReturnedOn.Year > 1900)
+                {
+                    @Html.DisplayFor(m => item.ReturnedOn)
+                }
             </td>
+
         </tr>
     }
 </table>
@@ -70,7 +85,11 @@
         }
         else
         {
-            if (Model.Status != SimpleLibrary.Common.Enums.BookStatus.Rent)
+            if (Model.Status == SimpleLibrary.Common.Enums.BookStatus.Rent)
+            {
+                @Html.ActionLink("Return", "Return", new { id = Model.ISBN }, new { @class = "btn btn-info" })
+            }
+            else
             {
                 @Html.ActionLink("Rent this book", "Rent", new { id = Model.ISBN }, new { @class = "btn btn-warning" })
             }
