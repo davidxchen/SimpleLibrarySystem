@@ -34,3 +34,5 @@ $tf*/
 /Deploy
 /DeployTapeManager
 /packages
+/SimpleLibrary.Web/App_Data/*.mdf
+/SimpleLibrary.Web/App_Data/*.ldf
