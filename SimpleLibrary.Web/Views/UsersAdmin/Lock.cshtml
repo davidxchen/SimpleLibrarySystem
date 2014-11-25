@@ -1,9 +1,12 @@
 ﻿@model ApplicationUser
+
 @{
-    ViewBag.Title = "Delete";
+    ViewBag.Title = "Lock";
 }
-<h2>Delete.</h2>
-<h3>Are you sure you want to delete this User?</h3>
+
+<h2>Lock</h2>
+
+<h3>Are you sure you want to lock out this User?</h3>
 <div>
     <h4>User.</h4>
     <hr />
@@ -22,7 +25,7 @@
         <div class="form-actions no-color">
             @if (!ViewBag.HasUnreturnedBooks)
             {
-                <input type="submit" value="Delete" class="btn btn-default" />
+                <input type="submit" value="Lock out" class="btn btn-danger" />
             }
             @Html.ActionLink("Back to List", "Index")
         </div>

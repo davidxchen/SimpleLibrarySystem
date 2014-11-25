@@ -10,6 +10,10 @@ using System.Net;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using SimpleLibrary.Service.Commands;
+using SimpleLibrary.Service.Models;
+using SimpleLibrary.Common;
+using SimpleLibrary.Service.ModelBuilders;
 
 namespace SimpleLibrary.Web.Controllers
 {
@@ -200,6 +204,12 @@ namespace SimpleLibrary.Web.Controllers
                 {
                     return HttpNotFound();
                 }
+
+                var userBuilder = new LibraryUserModelBuilder();
+                var userModel = await userBuilder.BuildModelFromAsync(user.UserName);
+
+                ViewBag.HasUnreturnedBooks = userModel.RentBooks != null && userModel.RentBooks.Count > 0;
+
                 return View(user);
             }
             return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -226,6 +236,124 @@ namespace SimpleLibrary.Web.Controllers
                         ModelState.AddModelError("", result.Errors.First());
                         return View();
                     }
+                    return RedirectToAction("Index");
+                }
+                else
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                }
+            }
+            return View();
+        }
+
+        public async Task<ActionResult> Lock(int id)
+        {
+            if (id > 0)
+            {
+                var user = await UserManager.FindByIdAsync(id);
+                if (user == null)
+                {
+                    return HttpNotFound();
+                }
+                
+                var userBuilder = new LibraryUserModelBuilder();
+                var userModel = await userBuilder.BuildModelFromAsync(user.UserName);
+
+                ViewBag.HasUnreturnedBooks = userModel.RentBooks != null && userModel.RentBooks.Count > 0;
+
+                return View(user);
+            }
+            return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+        }
+
+        [HttpPost, ActionName("Lock")]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> LockOutConfirmed(int id)
+        {
+            if (ModelState.IsValid)
+            {
+                if (id > 0)
+                {
+                    var user = await UserManager.FindByIdAsync(id);
+                    if (user == null)
+                    {
+                        return HttpNotFound();
+                    }
+
+                    user.LockoutEndDateUtc = DateTime.Now.AddYears(100);
+
+                    var result = await UserManager.UpdateAsync(user);
+                    if (!result.Succeeded)
+                    {
+                        ModelState.AddModelError("", result.Errors.First());
+                        return View();
+                    }
+
+                    var userModel = new LibraryUserViewModel
+                    {
+                        UserName = user.UserName,
+                        Status = Enums.UserStatus.Inactive
+                    };
+
+                    var userCommand = new LibraryUserCommand();
+                    userCommand.Execute(userModel);
+
+                    return RedirectToAction("Index");
+                }
+                else
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                }
+            }
+            return View();
+        }
+
+        public async Task<ActionResult> Unlock(int id)
+        {
+            if (id > 0)
+            {
+                var user = await UserManager.FindByIdAsync(id);
+                if (user == null)
+                {
+                    return HttpNotFound();
+                }
+                return View(user);
+            }
+            return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+        }
+
+        [HttpPost, ActionName("Unlock")]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> RemoveLockOutConfirmed(int id)
+        {
+            if (ModelState.IsValid)
+            {
+                if (id > 0)
+                {
+                    var user = await UserManager.FindByIdAsync(id);
+                    if (user == null)
+                    {
+                        return HttpNotFound();
+                    }
+
+                    user.LockoutEndDateUtc = DateTime.Now.AddDays(-1);
+
+                    var result = await UserManager.UpdateAsync(user);
+                    if (!result.Succeeded)
+                    {
+                        ModelState.AddModelError("", result.Errors.First());
+                        return View();
+                    }
+
+                    var userModel = new LibraryUserViewModel
+                    {
+                        UserName = user.UserName,
+                        Status = Enums.UserStatus.Active
+                    };
+
+                    var userCommand = new LibraryUserCommand();
+                    userCommand.Execute(userModel);
+
                     return RedirectToAction("Index");
                 }
                 else

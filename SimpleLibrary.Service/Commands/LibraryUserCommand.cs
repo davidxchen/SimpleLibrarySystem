@@ -32,12 +32,12 @@ namespace SimpleLibrary.Service.Commands
                 isNew = true;
             }
 
-            entity.UserRole = model.UserRole;
             entity.Status = (short)model.Status;
 
             if (isNew)
             {
                 entity.UserName = model.UserName;
+                entity.UserRole = model.UserRole;
                 base.LibraryContext.LibraryUsers.Add(entity);
             }
 

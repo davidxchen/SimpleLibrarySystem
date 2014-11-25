@@ -87,7 +87,10 @@
         {
             if (Model.Status == SimpleLibrary.Common.Enums.BookStatus.Rent)
             {
-                @Html.ActionLink("Return", "Return", new { id = Model.ISBN }, new { @class = "btn btn-info" })
+                if (ViewBag.IsBookRentByMe)
+                {
+                    @Html.ActionLink("Return", "Return", new { id = Model.ISBN }, new { @class = "btn btn-info" })
+                }
             }
             else
             {

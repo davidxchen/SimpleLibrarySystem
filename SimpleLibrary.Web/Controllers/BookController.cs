@@ -32,16 +32,25 @@ namespace SimpleLibrary.Web.Controllers
             if (modelList.Any())
             {
                 model = modelList.FirstOrDefault();
+
+                var userName = User.Identity.Name;
+
+                var userBuilder = new LibraryUserModelBuilder();
+                var userModel = userBuilder.BuildModelFrom(userName);
+
+                ViewBag.IsBookRentByMe = userModel.RentBooks != null && userModel.RentBooks.Where(r => r.ISBN.CompareTo(model.ISBN) == 0).Any();
             }
 
             return View(model);
         }
 
+        [Authorize]
         public ActionResult Create()
         {
             return View();
         }
 
+        [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Create(BookViewModel model)
@@ -83,6 +92,7 @@ namespace SimpleLibrary.Web.Controllers
         }
 
         // id == ISBN
+        [Authorize]
         public ActionResult Edit(string id)
         {
             if (string.IsNullOrEmpty(id))
@@ -106,6 +116,7 @@ namespace SimpleLibrary.Web.Controllers
             return View(model);
         }
 
+        [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Edit(BookViewModel model)
@@ -125,6 +136,7 @@ namespace SimpleLibrary.Web.Controllers
         }
 
         // id == ISBN
+        [Authorize]
         public ActionResult Delete(string id)
         {
             if (string.IsNullOrEmpty(id))
@@ -148,6 +160,7 @@ namespace SimpleLibrary.Web.Controllers
             return View(model);
         }
 
+        [Authorize]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> DeleteConfirmed(int id)
@@ -171,6 +184,7 @@ namespace SimpleLibrary.Web.Controllers
         }
 
         // id == ISBN
+        [Authorize]
         public ActionResult Rent(string id)
         {
             if (string.IsNullOrEmpty(id))
@@ -195,6 +209,7 @@ namespace SimpleLibrary.Web.Controllers
         }
 
         // id == ISBN
+        [Authorize]
         [HttpPost, ActionName("Rent")]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> RentConfirmed(string id)
@@ -224,6 +239,7 @@ namespace SimpleLibrary.Web.Controllers
         }
 
         // id == ISBN
+        [Authorize]
         public ActionResult Return(string id)
         {
             if (string.IsNullOrEmpty(id))
@@ -238,6 +254,13 @@ namespace SimpleLibrary.Web.Controllers
             if (modelList.Any())
             {
                 model = modelList.FirstOrDefault();
+
+                var userName = User.Identity.Name;
+
+                var userBuilder = new LibraryUserModelBuilder();
+                var userModel = userBuilder.BuildModelFrom(userName);
+
+                ViewBag.IsBookRentByMe = userModel.RentBooks != null && userModel.RentBooks.Where(r => r.ISBN.CompareTo(model.ISBN) == 0).Any();
             }
             else
             {
@@ -248,6 +271,7 @@ namespace SimpleLibrary.Web.Controllers
         }
 
         // id == ISBN
+        [Authorize]
         [HttpPost, ActionName("Return")]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> ReturnConfirmed(string id)

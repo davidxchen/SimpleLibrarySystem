@@ -22,7 +22,13 @@
         @Html.AntiForgeryToken()
 
         <div class="form-actions no-color">
-            <input type="submit" value="Return" class="btn btn-info" /> |
+            @if (Model.Status == SimpleLibrary.Common.Enums.BookStatus.Rent)
+            {
+                if (ViewBag.IsBookRentByMe)
+                {
+                    <input type="submit" value="Return" class="btn btn-info" />
+                }
+            }
             @Html.ActionLink("Back to List", "Index")
         </div>
     }

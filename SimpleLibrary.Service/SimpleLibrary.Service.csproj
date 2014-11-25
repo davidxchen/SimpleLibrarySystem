@@ -53,6 +53,7 @@
     <Compile Include="Interfaces\IModelBuilder.cs" />
     <Compile Include="Interfaces\IModelCommand.cs" />
     <Compile Include="ModelBuilders\BookModelBuilder.cs" />
+    <Compile Include="ModelBuilders\LibraryUserModelBuilder.cs" />
     <Compile Include="Models\BookRentHistoryViewModel.cs" />
     <Compile Include="Models\BookViewModel.cs" />
     <Compile Include="Models\UserViewModel.cs" />
