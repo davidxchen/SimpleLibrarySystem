@@ -5,7 +5,7 @@
 
 <h2>Create</h2>
 
-@using (Html.BeginForm())
+@using (Html.BeginForm("Create", "Book", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
     @Html.AntiForgeryToken()
 
@@ -32,6 +32,13 @@
             <div class="col-md-10">
                 @Html.TextAreaFor(model => model.Description, new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.Description)
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.Cover, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <input type="file" id="UploadedCoverFile" name="UploadedCoverFile" class="form-control" />
+                @Html.ValidationMessageFor(model => model.Cover)
             </div>
         </div>
         <div class="form-group">

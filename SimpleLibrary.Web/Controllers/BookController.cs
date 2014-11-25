@@ -64,6 +64,14 @@ namespace SimpleLibrary.Web.Controllers
                     return View();
                 }
 
+                if (model.UploadedCoverFile != null)
+                {
+                    var image = model.UploadedCoverFile;
+
+                    model.Cover = new byte[image.ContentLength];
+                    image.InputStream.Read(model.Cover, 0, image.ContentLength);
+                }
+
                 var bookCommand = new BookCommand();
                 bool result = await bookCommand.ExecuteAsync(model);
                 if (!result)
@@ -123,6 +131,14 @@ namespace SimpleLibrary.Web.Controllers
         {
             if (ModelState.IsValid)
             {
+                if (model.UploadedCoverFile != null)
+                {
+                    var image = model.UploadedCoverFile;
+
+                    model.Cover = new byte[image.ContentLength];
+                    image.InputStream.Read(model.Cover, 0, image.ContentLength);
+                }
+
                 var bookCommand = new BookCommand();
                 bool result = await bookCommand.ExecuteAsync(model);
                 if (!result)
@@ -132,6 +148,7 @@ namespace SimpleLibrary.Web.Controllers
                 }
                 return RedirectToAction("Index");
             }
+
             return View();
         }
 
@@ -298,6 +315,24 @@ namespace SimpleLibrary.Web.Controllers
             }
 
             return View();
+        }
+
+        public async Task<ActionResult> Cover(string id)
+        {
+            var model = new BookViewModel();
+            var bookBuilder = new BookModelBuilder();
+            var modelList = await bookBuilder.CreateModelListAsync(b => b.ISBN.StartsWith(id), 0, 1);
+
+            if (modelList.Any())
+            {
+                model = modelList.FirstOrDefault();
+
+                return File(model.Cover, "image/jpg");
+            }
+            else
+            {
+                return new HttpNotFoundResult();
+            }
         }
     }
 }

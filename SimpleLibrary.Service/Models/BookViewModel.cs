@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web;
 
 namespace SimpleLibrary.Service.Models
 {
@@ -18,6 +19,8 @@ namespace SimpleLibrary.Service.Models
         public string BookName { get; set; }
 
         public byte[] Cover { get; set; }
+
+        public HttpPostedFileBase UploadedCoverFile { get; set; }
 
         public string Description { get; set; }
 

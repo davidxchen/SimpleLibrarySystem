@@ -37,6 +37,11 @@ namespace SimpleLibrary.Service.Commands
             book.BookName = model.BookName;
             book.Description = model.Description;
 
+            if (model.Cover != null && model.Cover.Length > 0)
+            {
+                book.Cover = model.Cover;
+            }
+
             if (isNew)
             {
                 book.CreatedOn = DateTime.Now;

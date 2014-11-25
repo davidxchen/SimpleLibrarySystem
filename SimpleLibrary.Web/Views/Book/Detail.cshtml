@@ -37,6 +37,8 @@
             }
         </dd>
     </dl>
+
+    <img src="@Url.Action("Cover", "Book", new { id = Model.ISBN })" rel="@Model.BookName" width="100" />
 </div>
 
 <h4>List of rent history of this book</h4>
