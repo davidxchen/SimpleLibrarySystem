@@ -1,0 +1,65 @@
+﻿@model IEnumerable<BookViewModel>
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+@if (Request.IsAuthenticated && User.IsInRole("Admin"))
+{
+    <p>
+        @Html.ActionLink("Create New", "Create")
+    </p>
+}
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.ISBN)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.BookName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Description)
+        </th>
+        <th>
+        </th>
+    </tr>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.ISBN)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.BookName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+            <td>
+                @if (Request.IsAuthenticated)
+                {
+                    if (User.IsInRole("Admin"))
+                    {
+                        @Html.ActionLink("Edit", "Edit", new { id = item.ISBN }, new { @class = "btn btn-primary" })
+                        @Html.ActionLink("Delete", "Delete", new { id = item.ISBN }, new { @class = "btn btn-danger" })
+                    }
+                    else
+                    {
+                        if (item.Status != SimpleLibrary.Common.Enums.BookStatus.Rent)
+                        {
+                            @Html.ActionLink("Rent this book", "Rent", new { id = item.ISBN }, new { @class = "btn btn-warning" })
+                        }
+                    }
+                }
+
+                @Html.ActionLink("Detail", "Detail", new { id = item.ISBN }, new { @class = "btn btn-default" })
+            </td>
+
+
+
+        </tr>
+    }
+</table>

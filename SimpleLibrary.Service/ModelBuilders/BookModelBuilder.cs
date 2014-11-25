@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace SimpleLibrary.Service.ModelBuilders
 {
-    public class BookModelBuilder : BaseModelBuilder, IModelBuilder<BookViewModel, Books>
+    public class BookModelBuilder : BaseService, IModelBuilder<BookViewModel, Books>
     {
         public BookModelBuilder()
             : base()
@@ -24,6 +24,7 @@ namespace SimpleLibrary.Service.ModelBuilders
 
             if (entity != null)
             {
+                model.Id = entity.Id;
                 model.ISBN = entity.ISBN;
                 model.BookName = entity.BookName;
                 model.Cover = entity.Cover;
@@ -31,6 +32,8 @@ namespace SimpleLibrary.Service.ModelBuilders
                 model.Status = (Enums.BookStatus)Enum.Parse(typeof(Enums.BookStatus), entity.Status.ToString(), true);
                 model.LastRentOn = entity.LastRentOn;
             }
+
+            model.RentHistoryList = new List<BookRentHistoryViewModel>();
 
             return model;
         }

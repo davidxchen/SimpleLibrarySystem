@@ -3,49 +3,104 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
+using System.Collections.Generic;
+using System.Web;
+using Owin;
+using Microsoft.AspNet.Identity.Owin;
+using Microsoft.Owin;
+using Microsoft.Owin.Security.Cookies;
+using Microsoft.Owin.Security.Google;
+using System;
 
 namespace SimpleLibrary.Web.Models
 {
-    // You can add profile data for the user by adding more properties to your ApplicationUser class, please visit http://go.microsoft.com/fwlink/?LinkID=317594 to learn more.
-    public class ApplicationUser : IdentityUser
+    public class ApplicationUserLogin : IdentityUserLogin<int> { }
+    public class ApplicationUserClaim : IdentityUserClaim<int> { }
+    public class ApplicationUserRole : IdentityUserRole<int> { }
+
+    public class ApplicationRole : IdentityRole<int, ApplicationUserRole>, IRole<int>
     {
-        public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<ApplicationUser> manager)
+        public string Description { get; set; }
+
+        public ApplicationRole() : base() { }
+        public ApplicationRole(string name)
+            : this()
         {
-            // Note the authenticationType must match the one defined in CookieAuthenticationOptions.AuthenticationType
-            var userIdentity = await manager.CreateIdentityAsync(this, DefaultAuthenticationTypes.ApplicationCookie);
-            // Add custom user claims here
+            this.Name = name;
+        }
+
+        public ApplicationRole(string name, string description)
+            : this(name)
+        {
+            this.Description = description;
+        }
+    }
+
+
+    public class ApplicationUser : IdentityUser<int, ApplicationUserLogin, ApplicationUserRole, ApplicationUserClaim>, IUser<int>
+    {
+        public async Task<ClaimsIdentity>
+            GenerateUserIdentityAsync(UserManager<ApplicationUser, int> manager)
+        {
+            var userIdentity = await manager
+                .CreateIdentityAsync(this, DefaultAuthenticationTypes.ApplicationCookie);
             return userIdentity;
         }
     }
 
-    public class ApplicationRole : IdentityRole
-    {
 
-        public ApplicationRole() : base() { }
-
-        public ApplicationRole(string name, string description)
-            : base(name)
-        {
-
-            this.Description = description;
-
-        }
-
-        public virtual string Description { get; set; }
-
-    }
-
-
-    public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
+    public class ApplicationDbContext
+        : IdentityDbContext<ApplicationUser, ApplicationRole, int,
+        ApplicationUserLogin, ApplicationUserRole, ApplicationUserClaim>
     {
         public ApplicationDbContext()
-            : base("DefaultConnection", throwIfV1Schema: false)
+            : base("DefaultConnection")
         {
+        }
+
+        static ApplicationDbContext()
+        {
+            Database.SetInitializer<ApplicationDbContext>(new ApplicationDbInitializer());
         }
 
         public static ApplicationDbContext Create()
         {
             return new ApplicationDbContext();
+        }
+    }
+
+
+    public class ApplicationUserStore :
+    UserStore<ApplicationUser, ApplicationRole, int,
+    ApplicationUserLogin, ApplicationUserRole, ApplicationUserClaim>, IUserStore<ApplicationUser, int>, IDisposable
+    {
+        public ApplicationUserStore()
+            : this(new IdentityDbContext())
+        {
+            base.DisposeContext = true;
+        }
+
+        public ApplicationUserStore(DbContext context)
+            : base(context)
+        {
+        }
+    }
+
+
+    public class ApplicationRoleStore
+    : RoleStore<ApplicationRole, int, ApplicationUserRole>,
+    IQueryableRoleStore<ApplicationRole, int>,
+    IRoleStore<ApplicationRole, int>, IDisposable
+    {
+        public ApplicationRoleStore()
+            : base(new IdentityDbContext())
+        {
+            base.DisposeContext = true;
+        }
+
+        public ApplicationRoleStore(DbContext context)
+            : base(context)
+        {
         }
     }
 }

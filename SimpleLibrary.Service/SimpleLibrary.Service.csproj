@@ -46,9 +46,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Common\BaseModelBuilder.cs" />
+    <Compile Include="Commands\BookCommand.cs" />
+    <Compile Include="Commands\LibraryUserCommand.cs" />
+    <Compile Include="Common\BaseService.cs" />
     <Compile Include="Interfaces\IModelBuilder.cs" />
+    <Compile Include="Interfaces\IModelCommand.cs" />
     <Compile Include="ModelBuilders\BookModelBuilder.cs" />
+    <Compile Include="Models\BookRentHistoryViewModel.cs" />
     <Compile Include="Models\BookViewModel.cs" />
     <Compile Include="Models\UserViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -67,9 +71,7 @@
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Commands\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

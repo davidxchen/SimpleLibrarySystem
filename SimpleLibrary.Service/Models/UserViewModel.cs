@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace SimpleLibrary.Service.Models
 {
-    public class UserViewModel
+    public class LibraryUserViewModel
     {
         public int Id { get; set; }
 

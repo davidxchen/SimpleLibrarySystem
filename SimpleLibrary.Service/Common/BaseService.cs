@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace SimpleLibrary.Service
 {
-    public class BaseModelBuilder : IDisposable
+    public class BaseService : IDisposable
     {
         public SimpLibSysContext LibraryContext
         {
@@ -17,7 +17,7 @@ namespace SimpleLibrary.Service
             set;
         }
 
-        public BaseModelBuilder()
+        public BaseService()
         {
             this.LibraryContext = new SimpLibSysContext();
         }
